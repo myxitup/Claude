@@ -1,6 +1,6 @@
 import re, json, os, sys
 R = sys.argv[1]
-START = [0.6, 4.3, 23.4, 32.12, 40.15, 50.07, 25.29]   # where each line starts in the round
+START = [0.6, 7.08, 26.11, 32.65, 35.23, 45.0, 28.0, 3.95]   # where each line starts in the round
 lines = json.load(open(os.path.join(R, 'lines.json')))
 words = []; cues = {}
 def phrase_time(al, text, ph, t0):
@@ -22,5 +22,5 @@ for i, (who, text) in enumerate(lines):
         if t is not None: cues.setdefault(ph, t)
     cues[f'end{i}'] = round(t0+en[-1], 3)
 words=[w for w in words if w[0].strip('.')!='']  # TAGFILTER
-json.dump({'start': START, 'words': words, 'cues': cues, 'total': 59.87}, open(os.path.join(R, 'tl.json'), 'w'))
+json.dump({'start': START, 'words': words, 'cues': cues, 'total': 50.08}, open(os.path.join(R, 'tl.json'), 'w'))
 print(json.dumps(cues, indent=0))

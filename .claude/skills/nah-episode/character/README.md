@@ -5,8 +5,7 @@
 ## What's here
 | Folder | Contents |
 |---|---|
-| `poses/` | 24 full-body poses with transparent backgrounds + `faces.json` (mouth and eye boxes per pose, skin colour) |
-| `heads/` | 12 chest-up expressions for the bust cam + `faces.json` |
+| `rigset/` | Everything the rig draws: 24 full-body poses, 12 close-up heads (`h_` prefix), a mouthless copy (`__nm`) and a face mask (`__mask`) for every talking pose, and `faces.json` (mouth/eye boxes, skin colour) |
 | `mouths/` | 9 drawn mouths for lip sync + `mouths.json` (size and anchor) |
 | `source-sheets/` | The original sheets as the user sent them |
 | `rig/` | `rig.html` (renderer), `rigrun.js` (stills/video), prep and cut-out scripts |
@@ -23,8 +22,8 @@
 
 ## How the rig works
 1. Pose swaps on cue words from ElevenLabs word timings, with a 0.14 s crossfade and a small squash.
-2. Lip sync: a skin-coloured patch covers the drawn mouth, then the drawn mouth for the current letter is placed on the mouth anchor, scaled to the face (`w × 0.95 / rest width`).
-3. Blinks every ~3 s (eyelid patches over the eye boxes), breathing bob, slight sway; laugh poses bounce.
+2. Lip sync: while talking the rig draws the **mouthless copy** of the pose (its drawn mouth removed, outline kept), then the drawn mouth for the current letter, **clipped by the face mask** so it can never cross the outline. Size: `w × 0.95 / rest width`; close-up heads use a fixed mouth width of 48 placed slightly in from the cheek edge (`mouthRemove` keeps the original box for the clean-up). Build the copies with `rig/mouthless.py` (keeps dark pixels within ~5 px of transparency = the outline).
+3. Blinks every ~3 s **in wide shots only** (never in close-ups, where patches show), breathing bob, slight sway; laugh poses bounce.
 4. Poses with open or special mouths (`shocked`, `excited`, `laugh`, `facepalm`, `thinking` head, etc.) keep their drawn mouth (`noLip`).
 5. Alignment: each pose is anchored by its mouth x (or `ax`) and its feet (image bottom), so the head stays put between poses.
 
@@ -36,6 +35,5 @@ Close-up heads are stored in the rig set with an `h_` prefix (`h_thinking`, `h_s
 - Cut out with `cutout2.py` (uses the image's own transparency), find eyes and teeth with `face_find.py`, add closed-mouth positions by hand from a zoomed grid, then add the entry to `faces.json`.
 - Keep the user's own wording: the art is theirs and must stay original (never "in the style of" an existing show).
 
-## Still to do
-- Replace "KRIS" with "RICKY" in the round engine (captions tag, scoreboard, "RICKY SAYS" sticker).
-- Put the rig into the round engine in place of the stick-figure skeptic (couch corner and bust cam in the YouTube-pause overlay).
+## In the round engine
+`engine/round-ricky.html` loads `rig/rig_embed.html` in a hidden iframe (Chromium needs `--allow-file-access-from-files --disable-web-security`), calls its `render(T)` and draws its canvas either full-screen (opener, reaction) or into Ricky's box (pauses, countdown, decision). `scripts/ricky-timeline.py` builds his poses, mouth shapes and full-screen/box windows on the final video clock. "RICKY" replaces "KRIS" everywhere on screen. Ricky can also appear small inside scene art (e.g. shocked on Venus) using a pose image.

@@ -9,8 +9,8 @@ const cv=document.getElementById('c'),X=cv.getContext('2d'),W=1280,H=720,PI=Math
 const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v)),lerp=(a,b,u)=>a+(b-a)*u,eo=t=>1-Math.pow(1-clamp(t),3);
 const rnd=i=>{const s=Math.sin(i*127.1+311.7)*43758.5453;return s-Math.floor(s)};
 function txt(s,x,y,size,col,font='Bang',align='center',stroke=0){X.font=`${size}px ${font}`;X.textAlign=align;X.textBaseline='middle';if(stroke){X.lineWidth=stroke;X.strokeStyle=INK;X.lineJoin='round';X.strokeText(s,x,y)}X.fillStyle=col;X.fillText(s,x,y)}
-let D,F,IMG={},MO={},MM=null;const NAMES=window.RNAMES||['stand','sit','point','facepalm','cross','laugh','shrug','thumbs','shocked','thinking','sideeye','annoyed','excited','pointyou','explain','remote'];
-window.ready=(async()=>{await document.fonts.load('30px Bang');MM=window.MOUTHMETA;await Promise.all(['rest','smile','slight','ah','ee','oh','oo','fv','mbp'].map(n=>new Promise(r=>{const i=new Image();i.onload=()=>{MO[n]=i;r()};i.src=window.MOUTHDIR+n+'.png'})));await Promise.all(NAMES.map(n=>new Promise(r=>{const i=new Image();i.onload=()=>{IMG[n]=i;r()};i.src=window.POSEDIR+n+'.png'})));return true});
+let D,F,IMG={},MO={},MM=null,NM={},MK={};const TMP=document.createElement('canvas'),TX=TMP.getContext('2d');const NAMES=window.RNAMES||['stand','sit','point','facepalm','cross','laugh','shrug','thumbs','shocked','thinking','sideeye','annoyed','excited','pointyou','explain','remote'];
+window.ready=(async()=>{await document.fonts.load('30px Bang');await Promise.all(NAMES.map(n=>Promise.all(['__nm','__mask'].map(sf=>new Promise(r=>{const i=new Image();i.onload=()=>{(sf==='__nm'?NM:MK)[n]=i;r()};i.onerror=()=>r();i.src=window.POSEDIR+n+sf+'.png'})))));MM=window.MOUTHMETA;await Promise.all(['rest','smile','slight','ah','ee','oh','oo','fv','mbp'].map(n=>new Promise(r=>{const i=new Image();i.onload=()=>{MO[n]=i;r()};i.src=window.MOUTHDIR+n+'.png'})));await Promise.all(NAMES.map(n=>new Promise(r=>{const i=new Image();i.onload=()=>{IMG[n]=i;r()};i.src=window.POSEDIR+n+'.png'})));return true});
 // ---------- room ----------
 function room(t){
   let g=X.createLinearGradient(0,0,0,H);g.addColorStop(0,'#3d3360');g.addColorStop(1,'#231c3a');X.fillStyle=g;X.fillRect(0,0,W,H);
@@ -48,18 +48,22 @@ function drawPose(name,t,alpha,squash,talkV,blink){const fr=frameOf(name);
   const bob=Math.sin(t*2.4)*.006,sway=Math.sin(t*1.1)*.006;
   X.save();X.globalAlpha=alpha;X.translate(fr.ax,fr.fl);X.rotate(sway);X.scale(fr.sc*(1+squash*.5),fr.sc*(1+bob-squash));
   if(name==='laugh'){X.translate(0,-Math.abs(Math.sin(t*14))*3)}
-  X.translate(-mx,-im.height);X.drawImage(im,0,0);
+  X.translate(-mx,-im.height);
+  const talk=f.mouth&&!f.noLip&&name!=='facepalm'&&name!=='laugh'&&talkV!=='rest'&&MO[talkV]&&NM[name]&&MK[name];
+  X.drawImage(talk?NM[name]:im,0,0);
   const sk=`rgb(${F.skin})`;
-  // mouth
-  if(f.mouth&&!f.noLip&&name!=='facepalm'&&name!=='laugh'&&talkV!=='rest'&&MO[talkV]){const[cx,cy,w,h]=f.mouth;const ms=f.ms||1,mm=MM[talkV],sc=w*.95/MM.rest.w;
-    X.fillStyle=sk;X.beginPath();X.ellipse(cx,cy+(f.baked==='closed'?2*ms:0),w/2+6*ms,Math.max(h/2,5*ms)+6*ms,0,0,TAU);X.fill();
-    X.drawImage(MO[talkV],cx-mm.ax*sc,cy-mm.ay*sc,mm.w*sc,mm.h*sc)}
+  if(talk){const[cx,cy,w,h]=f.mouth,mm=MM[talkV],sc=w*.95/MM.rest.w;
+    if(TMP.width!==im.width||TMP.height!==im.height){TMP.width=im.width;TMP.height=im.height}
+    TX.globalCompositeOperation='source-over';TX.clearRect(0,0,TMP.width,TMP.height);
+    TX.drawImage(MO[talkV],cx-mm.ax*sc,cy-mm.ay*sc,mm.w*sc,mm.h*sc);
+    TX.globalCompositeOperation='destination-in';TX.drawImage(MK[name],0,0);TX.globalCompositeOperation='source-over';
+    X.drawImage(TMP,0,0)}
   // blink
   if(blink)for(const[ex,ey,ew,eh]of f.eyes){X.fillStyle=sk;X.beginPath();X.ellipse(ex,ey,ew/2+2.5*(f.ms||1),eh/2+2.5*(f.ms||1),0,0,TAU);X.fill();X.strokeStyle=INK;X.lineWidth=2.6*(f.ms||1);X.beginPath();X.moveTo(ex-ew/2,ey);X.quadraticCurveTo(ex,ey+3,ex+ew/2,ey-1);X.stroke()}
   X.restore()}
 function character(t){
   const{cur,prev}=poseAt(t),u=clamp((t-cur.t)/.14),squash=Math.sin(PI*clamp((t-cur.t)/.22))*.05;
-  const v=visAt(t),b=blinkAt(t);
+  const v=visAt(t),b=blinkAt(t)&&shotOf(cur.p)!=='bust'&&!window.BUST;
   // floor shadow
   const fr=frameOf(cur.p),cut=shotOf(prev.p)!==shotOf(cur.p);
   if(shotOf(cur.p)!=='bust'){X.fillStyle='rgba(0,0,0,.28)';X.beginPath();X.ellipse(fr.ax+10,fr.fl+2,150,16,0,0,TAU);X.fill()}

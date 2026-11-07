@@ -58,7 +58,7 @@ for k,(f0,dd) in enumerate([(392,.32),(370,.32),(349,.32),(330,1.0)]):  # sad tr
 add(glide(800,1600,.1)*env(int(.1*SR),.003,.04),c["It's true"]+.2,.15)  # score flip
 add(np.flip(whoosh(.7,300,5000)),c['And it spins backwards']-.5,.3)
 add(bell(2093,.9),c['Sun rises in the west'],.08); add(bell(2637,.9),c['Sun rises in the west']+.1,.06)
-add(bell(2600,.5),c['Venus is just doing']+.05,.1)
+add(bell(2600,.5),c.get('Venus is just doing',c['end5']-.6)+.05,.1)
 # round 2 sting
 r2=c['end5']+.45; add(whoosh(.5),r2-.1,.35)
 for k,n in enumerate([72,76,79,84]): add(marimba(midi(n),.6),r2+.35+k*.07,.2,.1)
