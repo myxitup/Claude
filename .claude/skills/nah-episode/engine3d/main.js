@@ -30,18 +30,18 @@ window.render=function(t){
     if(show&&mode==='pause'&&t>show.b-.3){const k=clamp((show.b-t)/.3);X.save();X.globalAlpha=k;X.fillStyle='rgba(0,0,0,.5)';X.beginPath();X.arc(300,H/2-30,70,0,TAU);X.fill();X.fillStyle='#fff';X.beginPath();X.moveTo(278,H/2-66);X.lineTo(338,H/2-30);X.lineTo(278,H/2+6);X.fill();X.restore()}
   }
   // score bug (not in intro)
-  if(t>TL.segs[1].b&&seg.kind!=='end'){const[r,f]=scoreAt(t);X.save();X.translate(24,22);rrect(0,0,250,46,10,'rgba(27,18,64,.85)','#ffd23f',3);txt('RICKY',58,24,26,'#3ec6ff',{stroke:4});txt(`${r} : ${f}`,125,24,30,'#fff',{stroke:5});txt('FACTS',192,24,26,'#ff4f8b',{stroke:4});X.restore()}
+  if(seg.kind!=='end'){const[r,f]=scoreAt(t);X.save();X.translate(24,22);rrect(0,0,250,46,10,'rgba(27,18,64,.85)','#ffd23f',3);txt('RICKY',58,24,26,'#3ec6ff',{stroke:4});txt(`${r} : ${f}`,125,24,30,'#fff',{stroke:5});txt('FACTS',192,24,26,'#ff4f8b',{stroke:4});X.restore()}
   // scene-change flash
   const prevSeg=SEGS[SEGS.indexOf(seg)-1];const fromS=prevSeg&&(prevSeg.scene==='topic'?prevSeg.scenename:prevSeg.scene),toS=seg.scene==='topic'?seg.scenename:seg.scene;
   const sa=t-seg.a;if(prevSeg&&fromS!==toS&&sa<.12){X.fillStyle=`rgba(255,255,255,${.5*(1-sa/.12)})`;X.fillRect(0,0,W,H)}
   if(ctx&&ctx.flash){X.fillStyle=`rgba(255,255,255,${ctx.flash})`;X.fillRect(0,0,W,H)}
   const v=X.createRadialGradient(W/2,H/2,H*.5,W/2,H/2,H*.95);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(20,10,40,.2)');X.fillStyle=v;X.fillRect(0,0,W,H);
-  const f=Math.max(1-clamp(t/.3),clamp((t-(TL.total-.5))/.5));if(f>0){X.fillStyle=`rgba(0,0,0,${f})`;X.fillRect(0,0,W,H)}};
+  const f=Math.max(1-clamp(t/.08),clamp((t-(TL.total-.5))/.5));if(f>0){X.fillStyle=`rgba(0,0,0,${f})`;X.fillRect(0,0,W,H)}};
 function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=W/2;
   const cap=()=>{if(seg.lines)karaoke(seg.lines.flatMap(l=>l.words),t,H-70)};
   const lw=(s,n)=>{const ws=(seg.lines||[]).flatMap(l=>l.words||[]);let c=0;for(const w of ws)if(clean(w[0]).startsWith(clean(s))){if(c++===(n||0))return w[1]}return 1e9};
   if(k==='intro'){const a=.2;X.save();X.translate(W2,200);const s=pop(t,a,.35);X.scale(s,s);X.rotate(-.04);txt('NAH, I DON’T',0,-60,110,'#fff',{stroke:18});txt('BELIEVE THAT S-',0,50,110,'#ffd23f',{stroke:18});X.restore();
-    chip(t,lw('Three'),d,'3 CLAIMS',W2-260,560,{size:46,bg:'#3ec6ff'});chip(t,lw('Ricky'),d,'RICKY vs FACTS',W2,600,{size:46,bg:'#ff4f8b',fg:'#fff'});chip(t,lw('Do'),d,'DO YOU?',W2+260,560,{size:46,bg:'#7cff6b'});cap()}
+    chip(t,lw('Seven'),d,'7 MORE CLAIMS',W2-270,560,{size:46,bg:'#3ec6ff'});chip(t,lw('Ricky'),d,'RICKY vs FACTS',W2,600,{size:46,bg:'#ff4f8b',fg:'#fff'});chip(t,lw('do'),d,'DO YOU?',W2+270,560,{size:46,bg:'#7cff6b'});cap()}
   if(k==='wipe'){const u=sa/d;const x=u<.3?lerp(-W*1.4,0,eo(u/.3)):u>.75?lerp(0,W*1.4,ei((u-.75)/.25)):0;X.save();X.translate(x,0);X.fillStyle='#7b2ff2';X.beginPath();X.moveTo(-200,0);X.lineTo(W+200,0);X.lineTo(W,H);X.lineTo(-400,H);X.fill();
     X.fillStyle='#ffd23f';X.fillRect(-300,H/2+70,W+600,14);txt(`ROUND ${seg.round}`,W2,H/2-30,150,'#fff',{stroke:20});const[r,f]=seg.score;txt(`RICKY ${r} : ${f} FACTS`,W2,H/2+130,50,'#ffd23f',{stroke:9});X.restore()}
   if(k==='claim'){const ws=seg.lines[0].words;const k2=pop(t,seg.a+.05,.3);X.save();X.translate(W2,250);X.scale(k2,k2);X.rotate(-.015);rrect(-470,-150,940,300,26,'rgba(0,0,0,.3)',null);rrect(-480,-160,940,300,26,'#fffaf0',INK,7);
@@ -78,9 +78,28 @@ function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=
       chip(t,lw('backwards'),seg.b,'SPINS BACKWARDS!',300,330,{size:46,bg:'#ff4f8b',fg:'#fff'});chip(t,lw('west'),seg.b,'SUN RISES IN THE WEST',W-320,330,{size:42,bg:'#ffd23f'})}
     if(k==='why'&&seg.src){X.save();X.globalAlpha=clamp(sa/.5);txt(seg.src,W-24,H-22,22,'rgba(255,255,255,.9)',{font:'Hand',align:'right',stroke:5});X.restore()}
     if(!(showAt(t)))cap()}
+
+  if(k==='tease'){const s=pop(t,seg.a+.05,.3);X.save();X.translate(W2,170);X.scale(s,s);X.rotate(-.04);txt('NEXT TIME...',0,0,90,'#ffd23f',{stroke:14});X.restore();
+    chip(t,seg.a+.9,seg.b+1,'A JELLYFISH THAT LIVES FOREVER?',W2,360,{size:54,bg:'#fffaf0'});cap()}
+  if(k==='build'||k==='why'){const sn=seg.scenename,S=SETS[sn];
+    if(sn==='digital'&&k==='build'){chip(t,lw('type'),lw('weather')-.1,'1 QUESTION = 1 SEARCH',W2,150,{size:46,bg:'#ffd23f'});chip(t,lw('Billions'),lw('how')-.1,'BILLIONS OF PEOPLE',W2-280,170,{size:44,bg:'#3ec6ff'});chip(t,lw('day'),seg.b,'PER DAY = ?',W2+280,520,{size:48,bg:'#ff4f8b',fg:'#fff'})}
+    if(sn==='digital'&&k==='why'){chip(t,lw('false'),lw('five')-.1,'NOT 100 MILLION',W2,520,{size:50,bg:'#e5383b',fg:'#fff'});chip(t,lw('five'),seg.b,'5 TRILLION+ A YEAR',W2-300,520,{size:44,bg:'#3ec6ff'});chip(t,lw('thirteen'),seg.b,'≈13.7 BILLION A DAY',W2+300,520,{size:44,bg:'#7cff6b'})}
+    if(sn==='sky'&&k==='build'){if(S.drops[0].visible)label(t,lw('droplets'),lw('billions'),'WATER DROPLET',project(S.drops[5].position,S.cam),{dx:140,dy:-90,col:'#3ec6ff'});chip(t,lw('dust'),lw('billions')-.1,'SMALLER THAN DUST',300,160,{size:44,bg:'#ffd23f'});
+      chip(t,lw('billions'),lw('scale')-.1,'BILLIONS AND BILLIONS',W2,150,{size:48,bg:'#ff4f8b',fg:'#fff'});chip(t,lw('heavy'),seg.b,'?',W2+300,240,{size:110,bg:'#ffd23f'})}
+    if(sn==='sky'&&k==='why'){chip(t,lw('five'),lw('floats')-.1,'≈500 TONNES OF WATER',W2-300,150,{size:44,bg:'#3ec6ff'});const ne=Math.floor(clamp((t-lw('elephants')+1.2)/1.6)*100);if(t>lw('elephants')-1.2&&t<lw('floats'))chip(t,lw('elephants')-1.2,lw('floats')-.1,'ELEPHANTS: '+ne,W2+300,150,{size:44,bg:'#ffd23f'});
+      chip(t,lw('rising'),seg.b,'RISING WARM AIR',W2,560,{size:48,bg:'#ff8a3d',fg:'#fff'})}
+    if(sn==='harbour'&&k==='build'){chip(t,lw('1896'),lw('Britain')+.2,'1896',W2,170,{size:90,bg:'#ffd23f'});chip(t,lw('Britain'),lw('deadline')-.1,'BRITAIN',W2-260,170,{size:52,bg:'#1d4fa8',fg:'#fff'});chip(t,lw('Zanzibar'),lw('deadline')-.1,'ZANZIBAR',W2+260,170,{size:52,bg:'#e5383b',fg:'#fff'});
+      chip(t,lw('deadline'),lw('ran')-.1,'DEADLINE: 9:00 AM',W2,560,{size:48,bg:'#fffaf0'});chip(t,lw('long'),seg.b,'HOW LONG?',W2,170,{size:70,bg:'#ff4f8b',fg:'#fff'})}
+    if(sn==='harbour'&&k==='why'){stopwatch(t,seg.a+.2,190,250,ctx&&ctx.clock||0);chip(t,lw('thirty-eight'),seg.b,'38–45 MINUTES',W2+260,170,{size:52,bg:'#ffd23f'});chip(t,lw('shortest'),seg.b,'SHORTEST WAR EVER',W2+260,300,{size:46,bg:'#e5383b',fg:'#fff'})}
+    if(sn==='station'&&k==='build'){if(t>=lw('gravity')&&t<lw('station'))spine(t,lw('gravity'),170,320,0,'ON EARTH');chip(t,lw('gravity'),lw('station')-.1,'GRAVITY ↓',W2+180,160,{size:48,bg:'#ff4f8b',fg:'#fff'});
+      chip(t,lw('station'),lw('almost')-.1,'SPACE STATION',W2,160,{size:48,bg:'#3ec6ff'});chip(t,lw('almost'),lw('body')-.1,'ALMOST NO GRAVITY',W2,160,{size:46,bg:'#ffd23f'});chip(t,lw('body'),seg.b,'?',W2-300,240,{size:110,bg:'#ff4f8b',fg:'#fff'})}
+    if(sn==='station'&&k==='why'){const g=ctx&&ctx.grow||0;if(t>lw('grow'))spine(t,lw('grow'),170,320,g,'IN SPACE');chip(t,lw('three'),lw('back')-.1,'+3% ≈ 5 CM TALLER',W2+250,160,{size:46,bg:'#7cff6b'});chip(t,lw('back'),seg.b,'SHRINK BACK ON EARTH',W2+200,160,{size:44,bg:'#ffd23f'})}
+    if(sn==='bush'&&k==='build'){chip(t,lw('Australia'),lw('poop')-.1,'AUSTRALIA',W2+300,160,{size:52,bg:'#ff8a3d',fg:'#fff'});censor(t,lw('poop'),seg.b+1,project(new THREE.Vector3(3,1.7,-3.6),S.cam));chip(t,lw('shape'),seg.b,'WHAT SHAPE?',W2-280,170,{size:52,bg:'#ffd23f'})}
+    if(sn==='bush'&&k==='why'){chip(t,lw('cubes'),lw('gut')-.1,'CUBES!',W2-250,170,{size:80,bg:'#7cff6b'});if(t>=lw('gut')&&t<lw('bum')-.2)gut(t,lw('gut'),W2,190);chip(t,lw('bum'),seg.b,'ROUND BUM',W2+260,170,{size:56,bg:'#ff4f8b',fg:'#fff'})}
+  }
   if(k==='outro'){const s=pop(t,seg.a+.1,.35);X.save();X.translate(W2,180);X.scale(s,s);txt('FINAL SCORE',0,0,100,'#fff',{stroke:16});X.restore();const[r,f]=seg.score;chip(t,seg.a+.5,seg.b,`RICKY ${r} : ${f} FACTS`,W2,320,{size:64,bg:'#ffd23f'});cap()}
-  if(k==='end'){const s=pop(t,seg.a+.1,.35);X.save();X.translate(W2,400);X.scale(s,s);X.rotate(-.04);txt('NAH, I DON’T',0,-55,96,'#fff',{stroke:16});txt('BELIEVE THAT S-',0,40,96,'#ffd23f',{stroke:16});X.restore();
-    chip(t,seg.a+.5,seg.b+1,'SUBSCRIBE',W2-200,590,{size:56,bg:'#e5383b',fg:'#fff'});chip(t,seg.a+.8,seg.b+1,'SEND US A CLAIM',W2+210,590,{size:44,bg:'#3ec6ff'})}
+  if(k==='end'){const s=pop(t,seg.a+.1,.35);X.save();X.translate(W2,120);X.scale(s,s);X.rotate(-.04);txt('NAH, I DON’T',0,-55,96,'#fff',{stroke:16});txt('BELIEVE THAT S-',0,40,96,'#ffd23f',{stroke:16});X.restore();
+    chip(t,seg.a+.5,seg.b+1,'SUBSCRIBE',W2-200,640,{size:56,bg:'#e5383b',fg:'#fff'});chip(t,seg.a+.8,seg.b+1,'SEND US A CLAIM',W2+210,640,{size:44,bg:'#3ec6ff'})}
 }
 window.engineReady=(async()=>{
   TL=window.TLDATA;SEGS=TL.segs;RD=TL.ricky;RF=window.FACES;RMM=window.MOUTHMETA;

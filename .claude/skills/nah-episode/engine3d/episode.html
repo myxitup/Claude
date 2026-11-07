@@ -21,7 +21,7 @@ html,body{margin:0;background:#000;overflow:hidden}
 <script>
 // load fonts first so 3D sign textures use them, then the engine
 window.ready=(async()=>{await document.fonts.load('60px Bang');await document.fonts.load('40px Hand');
-  for(const f of['core.js','sets.js','hud.js','main.js'])await new Promise((r,j)=>{const s=document.createElement('script');s.src=f;s.onload=r;s.onerror=j;document.body.appendChild(s)});
+  for(const f of['core.js','sets.js','sets2.js','hud.js','main.js'])await new Promise((r,j)=>{const s=document.createElement('script');s.src=f;s.onload=r;s.onerror=j;document.body.appendChild(s)});
   return await window.engineReady})();
 </script>
 </body></html>
