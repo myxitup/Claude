@@ -4,7 +4,7 @@ const {chromium}=require('playwright');const {spawn}=require('child_process');co
 const d=JSON.parse(fs.readFileSync(C.data)),f=JSON.parse(fs.readFileSync(C.faces)),mm=JSON.parse(fs.readFileSync(C.mouthdir+'/mouths.json'));
 const b=await chromium.launch();const p=await b.newPage({viewport:{width:1280,height:720},deviceScaleFactor:mode==='video'?1.5:1});
 const errs=[];p.on('pageerror',e=>errs.push(e.message));
-await p.addInitScript(c=>{window.POSEDIR='file://'+c.posedir+'/';window.MOUTHDIR='file://'+c.mouthdir+'/';window.MOUTHMETA=c.mm;window.RNAMES=c.names;if(c.rsc)window.RSC=c.rsc;if(c.rfl)window.RFL=c.rfl;if(c.rax)window.RAX=c.rax;window.BUST=!!c.bust},{...C,mm});
+await p.addInitScript(c=>{window.POSEDIR='file://'+c.posedir+'/';window.MOUTHDIR='file://'+c.mouthdir+'/';window.MOUTHMETA=c.mm;window.RNAMES=c.names;if(c.rsc)window.RSC=c.rsc;if(c.rfl)window.RFL=c.rfl;if(c.rax)window.RAX=c.rax;window.BUST=!!c.bust;window.MIX=!!c.mix},{...C,mm});
 await p.goto('file://'+C.page);await p.evaluate(()=>window.ready());await p.evaluate(([a,c])=>{D=a;F=c},[d,f]);
 if(mode==='still'){let i=0;for(const t of process.argv[4].split(',').map(Number)){await p.evaluate(t=>render(t),t);await p.screenshot({path:`${C.stilldir}/${C.tag}${String(i++).padStart(2,'0')}.png`})}console.log(errs.join('\n')||'no errors');await b.close();return}
 const fps=30,n=Math.floor(d.total*fps);

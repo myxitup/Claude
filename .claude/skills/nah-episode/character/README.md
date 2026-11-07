@@ -1,6 +1,6 @@
-# The skeptic: cartoon character kit
+# Ricky: cartoon character kit
 
-2D cartoon version of the channel's skeptic (working name "Kris" until the user names him). Art made by the user with their AI image tool; cut out and rigged by Claude. Same face, curly hair, dark teal tracksuit with cream stripes, black crossbody bag, cream trainers, thick black outlines, flat colours.
+2D cartoon version of the channel's skeptic, **Ricky**. Art made by the user with their AI image tool; cut out and rigged by Claude. Same face, curly hair, dark teal tracksuit with cream stripes, black crossbody bag, cream trainers, thick black outlines, flat colours.
 
 ## What's here
 | Folder | Contents |
@@ -28,11 +28,14 @@
 4. Poses with open or special mouths (`shocked`, `excited`, `laugh`, `facepalm`, `thinking` head, etc.) keep their drawn mouth (`noLip`).
 5. Alignment: each pose is anchored by its mouth x (or `ax`) and its feet (image bottom), so the head stays put between poses.
 
+## Shot mix
+Close-up heads are stored in the rig set with an `h_` prefix (`h_thinking`, `h_shocked`...). `rig.html` in MIX mode picks the framing from the name: `h_*` = close-up, `sit*` = couch, everything else = standing. Changing shot type is a hard cut with a punch-in; `rig_prep_mix.py` shows a cue list mixing all three.
+
 ## Adding new art
 - Ask for **one pose per image**, full body, filling the frame, transparent background, using a pose sheet as the reference. One-per-image gets around the generator's ~1536 px size limit, so it comes out about 3× sharper.
 - Cut out with `cutout2.py` (uses the image's own transparency), find eyes and teeth with `face_find.py`, add closed-mouth positions by hand from a zoomed grid, then add the entry to `faces.json`.
 - Keep the user's own wording: the art is theirs and must stay original (never "in the style of" an existing show).
 
 ## Still to do
-- Name the character, then replace "KRIS" in captions, the scoreboard and the "KRIS SAYS" sticker.
+- Replace "KRIS" with "RICKY" in the round engine (captions tag, scoreboard, "RICKY SAYS" sticker).
 - Put the rig into the round engine in place of the stick-figure skeptic (couch corner and bust cam in the YouTube-pause overlay).

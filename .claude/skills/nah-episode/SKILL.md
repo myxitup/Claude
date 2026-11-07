@@ -33,7 +33,7 @@ Keep titles, thumbnails and the first seconds of every video **clean** (no swear
 - Calm, clear explainer voice. Currently **Reader** (ElevenLabs voice id `UOcZh6rmTE0wZkipSyDT`).
 - States the claim, builds suspense, explains the answer after the reveal.
 
-### The skeptic ("Kris" is a working name: rename before launch)
+### Ricky: the skeptic
 - Voice: **Nah Skeptic (channel voice)**, id `hHAW0H4xGGxJkRLet8A5`. A Voice Design voice made for this channel and saved **privately** in the user's account. It belongs to the channel; nobody can withdraw it. **Never share it to the Voice Library.**
   - Chosen from auditions: energetic, expressive young London man (MLE accent), medium pitch, not deep, big reactions.
   - Design description is kept in `examples/voice-design.md`.
@@ -41,7 +41,7 @@ Keep titles, thumbnails and the first seconds of every video **clean** (no swear
   - `eleven_multilingual_v2` and plain `eleven_v4` sound noticeably different. Use `eleven_v4_exp`.
   - Plain `eleven_v4` through the API ignores similarity; `eleven_v4_exp` applies it.
 - **Expression tags on every line**, in square brackets before the words they colour: `[skeptical]`, `[chuckles]`, `[incredulous]`, `[surprised]`, `[laughs]`, `[scoffs]`, `[dismissive]`, `[thinking]`, `[sighs]`, `[shocked]`. They are performed, not read. Strip them from captions.
-- The old library voice "Kris Trinity" (id `83rbhwXDTY5EOkzvd7V6`) was used for the pilot only. Do not use it: it is a real person's cloned voice, shared with 1,000+ other accounts, and can be withdrawn with 30 days' notice. The name "Kris" also belongs to that person, so the character needs his own name.
+- The old library voice "Kris Trinity" (id `83rbhwXDTY5EOkzvd7V6`) was used for the pilot only. Do not use it: it is a real person's cloned voice, shared with 1,000+ other accounts, and can be withdrawn with 30 days' notice. The skeptic's name is **Ricky**. "Kris" was a working name only; replace it everywhere (captions tag, scoreboard "RICKY 0 : 0 FACTS", the "RICKY SAYS" pick sticker).
 - Look: stick figure, backwards orange cap, purple hoodie, on a teal couch in a lamp-lit room, holding a remote. A red **NAH.** sticker on his window and a NAH. poster on the wall.
 - Personality: unimpressed, laid back, funny comparisons to everyday life. Sometimes right, often wrong, sometimes refuses to accept the truth.
 
@@ -118,7 +118,11 @@ Kris's interruptions use the **YouTube pause** look: frame freezes and dims, big
 - **Colours:** ink `#1d1b24`, TRUE green `#2fae5b`, FALSE red `#e5383b`, gold `#ffd23f`, Kris purple `#7b4fd6`, space `#05061a`.
 - **UI kit:** claim card with ROUND tag, TRUE/FALSE pills, countdown ring (gold, red on 2 and 1), verdict stamp (scales in, screen shake), scoreboard pill with flip animation, info card, race bars, Kris couch corner, YouTube pause overlay, word-by-word karaoke captions (current word gold; Kris's words red-pink with a purple KRIS tag).
 - **Presenter:** the original stick figure with the red scarf, on a floating rock, pointing at the action.
-- **The skeptic is a 2D cartoon character**, not a stick figure: 24 poses, 12 expressions and 9 drawn mouths in `character/`, animated by the cut-out rig in `character/rig/`. Use the couch-corner poses or the bust cam inside the YouTube-pause overlay. See `character/README.md`.
+- **Ricky is a 2D cartoon character**, not a stick figure: 24 poses, 12 expressions and 9 drawn mouths in `character/`, animated by the cut-out rig in `character/rig/`. Use the couch-corner poses or the bust cam inside the YouTube-pause overlay. See `character/README.md`.
+- **Shot mix for Ricky** (cut between them like TV, with a hard cut, a small punch-in and a quick flash; pose changes inside one shot crossfade):
+  - **Close-up (bust cam)**: quips, thinking, side-eye, quieter lines. The room behind zooms in.
+  - **Couch**: idle, pressing PAUSE on the remote, settling back, chilled reactions.
+  - **Standing**: the expressive moments: shocked, pointing at the viewer on "Nah", explaining, laughing, facepalm.
 - Cut visual transitions at least 0.1 s after a pause point so the frozen frame is clean.
 
 ---
