@@ -1,0 +1,27 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@font-face{font-family:Bang;src:url(node_modules/@fontsource/bangers/files/bangers-latin-400-normal.woff2)}
+@font-face{font-family:Hand;src:url(node_modules/@fontsource/patrick-hand/files/patrick-hand-latin-400-normal.woff2)}
+html,body{margin:0;background:#000;overflow:hidden}
+#gl,#hud{position:absolute;left:0;top:0;width:1280px;height:720px}
+</style>
+<script src="node_modules/three/build/three.min.js"></script>
+<script src="node_modules/three/examples/js/utils/BufferGeometryUtils.js"></script>
+<script src="node_modules/three/examples/js/shaders/CopyShader.js"></script>
+<script src="node_modules/three/examples/js/shaders/BokehShader.js"></script>
+<script src="node_modules/three/examples/js/shaders/AfterimageShader.js"></script>
+<script src="node_modules/three/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="node_modules/three/examples/js/postprocessing/RenderPass.js"></script>
+<script src="node_modules/three/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="node_modules/three/examples/js/postprocessing/MaskPass.js"></script>
+<script src="node_modules/three/examples/js/postprocessing/BokehPass.js"></script>
+<script src="node_modules/three/examples/js/postprocessing/AfterimagePass.js"></script>
+</head><body>
+<canvas id="gl"></canvas><canvas id="hud"></canvas>
+<script>
+// load fonts first so 3D sign textures use them, then the engine
+window.ready=(async()=>{await document.fonts.load('60px Bang');await document.fonts.load('40px Hand');
+  for(const f of['core.js','sets.js','hud.js','main.js'])await new Promise((r,j)=>{const s=document.createElement('script');s.src=f;s.onload=r;s.onerror=j;document.body.appendChild(s)});
+  return await window.engineReady})();
+</script>
+</body></html>
