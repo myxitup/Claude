@@ -1,1 +1,30 @@
-[["N", "True or false? A day on Venus is longer than its year."], ["N", "Here on Earth, a day is one spin: twenty-four hours. A year is one lap around the Sun: three hundred and sixty-five days. Venus is closer to the Sun, so its lap is shorter than ours. But Venus also spins... really, really slowly. So which takes longer? One spin... or one lap?"], ["N", "True or false? Lock it in."], ["K", "Nah. I don't believe dat. So man's birthday comes before he's even finished his day? Behave."], ["N", "It's true. Venus takes two hundred and forty-three Earth days to spin once, but only two hundred and twenty-five to go around the Sun. And it spins backwards, so the Sun rises in the west."], ["K", "Rah. It was true?! ...Backwards as well? Venus is just doing whatever it wants, innit."], ["K", "Closer to the Sun... spins slow... I dunno, man. Sounds true."]]
+[
+ [
+  "N",
+  "True or false? A day on Venus is longer than its year."
+ ],
+ [
+  "N",
+  "Here on Earth, a day is one spin: twenty-four hours. A year is one lap around the Sun: three hundred and sixty-five days. Venus is closer to the Sun, so its lap is shorter than ours. But Venus also spins... really, really slowly. So which takes longer? One spin... or one lap?"
+ ],
+ [
+  "N",
+  "True or false? Lock it in."
+ ],
+ [
+  "K",
+  "[dismissive] Nah. I don't believe dat. So man's birthday comes before he's even finished his day? [laughs] Behave."
+ ],
+ [
+  "N",
+  "It's true. Venus takes two hundred and forty-three Earth days to spin once, but only two hundred and twenty-five to go around the Sun. And it spins backwards, so the Sun rises in the west."
+ ],
+ [
+  "K",
+  "[shocked] Rah! It was true?! ...[incredulous] Backwards as well? [laughs] Venus is just doing whatever it wants, innit."
+ ],
+ [
+  "K",
+  "[thinking] Closer to the Sun... spins slow... [sighs] I dunno, man. Sounds true."
+ ]
+]

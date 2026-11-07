@@ -33,11 +33,15 @@ Keep titles, thumbnails and the first seconds of every video **clean** (no swear
 - Calm, clear explainer voice. Currently **Reader** (ElevenLabs voice id `UOcZh6rmTE0wZkipSyDT`).
 - States the claim, builds suspense, explains the answer after the reveal.
 
-### Kris: the skeptic
-- Voice: **Kris Trinity Voice 2.0** (professional voice clone, id `83rbhwXDTY5EOkzvd7V6`).
-- Model and settings must match the user's own takes: **`eleven_v4_exp`, stability 0.5, similarity 0.95.**
-  - `eleven_multilingual_v2` and plain `eleven_v4` sound noticeably different. Do not use them for Kris.
+### The skeptic ("Kris" is a working name: rename before launch)
+- Voice: **Nah Skeptic (channel voice)**, id `hHAW0H4xGGxJkRLet8A5`. A Voice Design voice made for this channel and saved **privately** in the user's account. It belongs to the channel; nobody can withdraw it. **Never share it to the Voice Library.**
+  - Chosen from auditions: energetic, expressive young London man (MLE accent), medium pitch, not deep, big reactions.
+  - Design description is kept in `examples/voice-design.md`.
+- Model and settings: **`eleven_v4_exp`, stability 0.35, similarity 0.9.** Lower stability = more animated.
+  - `eleven_multilingual_v2` and plain `eleven_v4` sound noticeably different. Use `eleven_v4_exp`.
   - Plain `eleven_v4` through the API ignores similarity; `eleven_v4_exp` applies it.
+- **Expression tags on every line**, in square brackets before the words they colour: `[skeptical]`, `[chuckles]`, `[incredulous]`, `[surprised]`, `[laughs]`, `[scoffs]`, `[dismissive]`, `[thinking]`, `[sighs]`, `[shocked]`. They are performed, not read. Strip them from captions.
+- The old library voice "Kris Trinity" (id `83rbhwXDTY5EOkzvd7V6`) was used for the pilot only. Do not use it: it is a real person's cloned voice, shared with 1,000+ other accounts, and can be withdrawn with 30 days' notice. The name "Kris" also belongs to that person, so the character needs his own name.
 - Look: stick figure, backwards orange cap, purple hoodie, on a teal couch in a lamp-lit room, holding a remote. A red **NAH.** sticker on his window and a NAH. poster on the wall.
 - Personality: unimpressed, laid back, funny comparisons to everyday life. Sometimes right, often wrong, sometimes refuses to accept the truth.
 
@@ -144,7 +148,7 @@ Kris's interruptions use the **YouTube pause** look: frame freezes and dims, big
 
 1. **Pick claims** (fact bank / vidIQ trending search). Check each verdict and note sources.
 2. **Write the round script**: narrator lines plus Kris lines (opener, 2–4 quips, thinking line ≤ 5.5 s, decision, reaction). Show it to the user and apply their edits.
-3. **Generate voices** with ElevenLabs `/v1/text-to-speech/{voice}/with-timestamps` so every word has a timing. Narrator: Reader. Kris: `eleven_v4_exp`, stability 0.5, similarity 0.95. One request per line.
+3. **Generate voices** with ElevenLabs `/v1/text-to-speech/{voice}/with-timestamps` so every word has a timing. Narrator: Reader. Skeptic: voice `hHAW0H4xGGxJkRLet8A5`, `eleven_v4_exp`, stability 0.35, similarity 0.9, expression tags on every line. One request per line.
    - If the user sends their own take, use it as-is and get word timings from `/v1/forced-alignment`.
 4. **Build the timeline** (`scripts/timeline.py`): line start times, phrase cue times, word list for captions.
 5. **Find pause points** at real silences in the narration (silence detection or the quietest 30 ms), so no word is clipped.

@@ -1,8 +1,8 @@
 import json, subprocess, base64, sys, os
 OUT = sys.argv[1]; MODEL = os.environ.get('EL_MODEL','eleven_multilingual_v2')
-VOICES = {'N': 'UOcZh6rmTE0wZkipSyDT', 'K': '83rbhwXDTY5EOkzvd7V6'}
+VOICES = {'N': 'UOcZh6rmTE0wZkipSyDT', 'K': os.environ.get('K_VOICE','hHAW0H4xGGxJkRLet8A5')}
 SET = {'N': {'stability': .5, 'similarity_boost': .8, 'style': .15, 'use_speaker_boost': True},
-       'K': {'stability': .5, 'similarity': .95, 'similarity_boost': .95}}
+       'K': {'stability': float(os.environ.get('K_STAB','.35')), 'similarity': .9, 'similarity_boost': .9}}
 LINES = json.load(open(sys.argv[2]))
 for i, (who, text) in enumerate(LINES):
     fn = os.path.join(OUT, f'{i:02d}_{who}')

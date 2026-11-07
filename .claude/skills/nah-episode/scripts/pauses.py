@@ -1,4 +1,4 @@
-import numpy as np, json, subprocess, wave, os, sys
+import re, numpy as np, json, subprocess, wave, os, sys
 R=sys.argv[1]; SR=44100; FPS=30
 tl=json.load(open(os.path.join(R,'tl_full.json')))
 w=wave.open(os.path.join(R,'mix.wav')); M=np.frombuffer(w.readframes(w.getnframes()),np.int16).reshape(-1,2).T.astype(float)/32768
@@ -21,11 +21,11 @@ for i,tv in enumerate(FR):
     al=json.load(open(os.path.join(R,'vo_q',f'{SEL[i]:02d}_K.json'))); wd=''; ws=0
     for ch,a,b in zip(al['characters'],al['character_start_times_seconds'],al['character_end_times_seconds']):
         if ch.isspace():
-            if wd: qwords.append([wd,round(T+LEAD+ws,3),round(T+LEAD+we,3),'K',100+SEL[i]]); wd=''
+            if wd: qwords.append([re.sub(r'\[[^\]]*\]','',wd),round(T+LEAD+ws,3),round(T+LEAD+we,3),'K',100+SEL[i]]); wd=''
         else:
             if not wd: ws=a
             wd+=ch; we=b
-    if wd: qwords.append([wd,round(T+LEAD+ws,3),round(T+LEAD+we,3),'K',100+SEL[i]])
+    if wd: qwords.append([re.sub(r'\[[^\]]*\]','',wd),round(T+LEAD+ws,3),round(T+LEAD+we,3),'K',100+SEL[i]])
     qm.append((T+LEAD,q)); T+=dur; cur=tv
 out.append(fade(M[:,int(cur*SR):])); T+=M.shape[1]/SR-cur
 mix=np.concatenate(out,1); mix=mix/np.max(np.abs(mix))*.95
@@ -36,5 +36,6 @@ for st,q in qm:
         a=int((f/FPS-st)*SR)
         if 0<=a<len(q): mo[f]=np.sqrt(np.mean(q[a:a+SR//FPS]**2))
 mo=np.clip(mo/np.percentile(mo[mo>0],90),0,1)
+qwords=[w for w in qwords if w[0].strip('.')!='']  # TAGFILTER
 tl['freezes']=fz; tl['qwords']=qwords; tl['qmouth']=[round(float(x),3) for x in mo]; tl['totalReal']=T
 json.dump(tl,open(os.path.join(R,'tl_real'+SUF+'.json'),'w')); print('real total',round(T,2),[round(f['dur'],2) for f in fz])
