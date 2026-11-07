@@ -118,6 +118,7 @@ Kris's interruptions use the **YouTube pause** look: frame freezes and dims, big
 - **Colours:** ink `#1d1b24`, TRUE green `#2fae5b`, FALSE red `#e5383b`, gold `#ffd23f`, Kris purple `#7b4fd6`, space `#05061a`.
 - **UI kit:** claim card with ROUND tag, TRUE/FALSE pills, countdown ring (gold, red on 2 and 1), verdict stamp (scales in, screen shake), scoreboard pill with flip animation, info card, race bars, Kris couch corner, YouTube pause overlay, word-by-word karaoke captions (current word gold; Kris's words red-pink with a purple KRIS tag).
 - **Presenter:** the original stick figure with the red scarf, on a floating rock, pointing at the action.
+- **The skeptic is a 2D cartoon character**, not a stick figure: 24 poses, 12 expressions and 9 drawn mouths in `character/`, animated by the cut-out rig in `character/rig/`. Use the couch-corner poses or the bust cam inside the YouTube-pause overlay. See `character/README.md`.
 - Cut visual transitions at least 0.1 s after a pause point so the frozen frame is clean.
 
 ---
