@@ -190,7 +190,24 @@ Claude cannot listen to audio: delivery and pronunciation are the user's call. S
 
 ---
 
-## 12. Examples
+## 12. Thumbnails
+
+The thumbnail decides the click (the "click" gate). Mock-ups and the headline test: `thumbnails/`, maker: `thumbnails/make-thumbs.js` (see `thumbnails/README.md`).
+
+- **Ricky's face, big, with a strong emotion** that matches the claim (shocked, skeptical, unimpressed, disgusted), usually on the right, with a white sticker outline. He is the channel's recognisable face.
+- **4–6 words that tell the story on their own**, huge with a thick black outline. Not 2 words that need explaining ("FOR SPEEDING?!"), not 8+ words that shrink on a phone ("THEY PAID THIS MUCH FOR A SPEEDING TICKET?"). Best: "PAID THIS / FOR SPEEDING?!".
+- **The title carries the full sentence:** "They Paid €121,000 for a Speeding Ticket... True or False?". Thumbnail and title split the job.
+- **One big, clear subject** (the ticket, the planet, the hippo). Bold colour with sunburst rays.
+- **Ask, never answer.** "?" or "?!". **No TRUE / NAH stamps** on a thumbnail (it kills the curiosity gap).
+- **Deliver the promise:** the video must answer exactly what the thumbnail asks.
+- **No real company logos** (the word "Google" is fine; its logo isn't).
+- Small "TRUE OR FALSE?" chip as branding.
+- **Make 2–3 versions per video** and run YouTube Studio's **Test & Compare** (up to 3 thumbnails; YouTube picks by watch time). Track which styles win and update these rules.
+- Always check the phone-size preview before choosing.
+
+---
+
+## 13. Examples
 
 - **Round 1, Venus (TRUE)** — `examples/round1-venus/`, `engine/round1-venus.js`. Ricky version 0:56: opener "A day longer than a year? Prove it."; couch quip "Twenty-four hours ain't enough, man."; close-up "Slower than my Wi-Fi? Nah."; countdown "Closer to the Sun... I dunno, man. Sounds true."; decision "Nah. Don't believe dat." (wrong); full-screen "Rah! It was true?!".
 - **Round 2, Finland speeding fine (TRUE)** — `examples/round2-finland.md`: the model for a "big disbelief" moment, and a round where Ricky gets it right.

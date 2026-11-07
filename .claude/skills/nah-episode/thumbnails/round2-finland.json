@@ -1,0 +1,17 @@
+{
+  "title": "They Paid €121,000 for a Speeding Ticket... True or False?",
+  "thumbs": [
+    {"name": "finland-A-short", "bg": {"c1": "#ffb547", "c2": "#c2311f"},
+     "subjects": [{"type": "ticket", "title": "SPEEDING FINE", "amount": "€121,000"}],
+     "ricky": {"pose": "h_shocked", "x": 1000, "h": 640},
+     "lines": [{"text": "FOR SPEEDING?!", "size": 118, "color": "#ffd23f"}]},
+    {"name": "finland-B-story", "bg": {"c1": "#ffb547", "c2": "#c2311f"},
+     "subjects": [{"type": "ticket", "title": "SPEEDING FINE", "amount": "€121,000", "y": 460}],
+     "ricky": {"pose": "h_shocked", "x": 1000, "h": 640},
+     "lines": [{"text": "PAID THIS", "size": 112, "color": "#fff"}, {"text": "FOR SPEEDING?!", "size": 112, "color": "#ffd23f"}]},
+    {"name": "finland-C-long", "bg": {"c1": "#ffb547", "c2": "#c2311f"},
+     "subjects": [{"type": "ticket", "title": "SPEEDING FINE", "amount": "€121,000", "y": 460}],
+     "ricky": {"pose": "h_shocked", "x": 1000, "h": 640},
+     "lines": [{"text": "THEY PAID THIS MUCH", "size": 84, "color": "#fff", "rot": -0.03}, {"text": "FOR A SPEEDING TICKET?", "size": 84, "color": "#ffd23f", "rot": -0.03}]}
+  ]
+}
