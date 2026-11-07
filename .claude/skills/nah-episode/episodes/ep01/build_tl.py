@@ -128,7 +128,7 @@ for R in ROUNDS:
 a=T;gap(.3);l=N(36,False);gap(.4);seg('outro','studio',a,lines=[l],score=list(score))
 a=T;K(43,'full','annoyed',[('Send me','pointyou')]);gap(.4);seg('react','den',a)
 a=T;gap(.3);l=N(38,False);gap(.6);seg('tease','studio',a,lines=[l],score=list(score))
-a=T;gap(12.0);seg('end','studio',a,score=list(score))
+a=T;gap(.6);K(45,'box','h_grin',[('or','pointyou')]);T=a+12.0;seg('end','studio',a,score=list(score))
 rk['poses'].sort(key=lambda p:p['t']);rk['vis'].sort(key=lambda v:v['t'])
 m=[]
 for x in rk['vis']:

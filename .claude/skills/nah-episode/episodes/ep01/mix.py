@@ -95,7 +95,7 @@ for s in segs:
         for i in range(5): fx('plonk',a+.15+i*.12,.35)
         fx('pop',W(s,'cubes'),.5); fx('sparkle',W(s,'cubes'),.35); fx('pop',W(s,'gut'),.4); fx('whoosh',W(s,'bum')-.5,.4); fx('pop',W(s,'bum'),.45)
     if k=='outro': fx('sting',a+.1,.55); fx('pop',a+.5,.5); fx('ooh',a+1.2,.35)
-    if k=='end': fx('whooshbig',a,.5); fx('pop',a+.5,.5); fx('pop',a+.8,.5)
+    if k=='end': fx('whooshbig',a,.5); fx('pop',a+5.2,.5); fx('pop',a+5.5,.5)
 # Ricky shows: pause click in/out, box pop
 for sh in rk['show']:
     if sh['type']=='pause': fx('click',sh['a']-.05,.6); fx('click',sh['b']-.15,.45)
