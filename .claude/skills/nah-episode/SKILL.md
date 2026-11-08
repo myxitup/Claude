@@ -211,3 +211,16 @@ The thumbnail decides the click (the "click" gate). Mock-ups and the headline te
 
 - **Round 1, Venus (TRUE)** — `examples/round1-venus/`, `engine/round1-venus.js`. Ricky version 0:56: opener "A day longer than a year? Prove it."; couch quip "Twenty-four hours ain't enough, man."; close-up "Slower than my Wi-Fi? Nah."; countdown "Closer to the Sun... I dunno, man. Sounds true."; decision "Nah. Don't believe dat." (wrong); full-screen "Rah! It was true?!".
 - **Round 2, Finland speeding fine (TRUE)** — `examples/round2-finland.md`: the model for a "big disbelief" moment, and a round where Ricky gets it right.
+
+---
+
+## 14. Weekly schedule, Shorts and the 3D pipeline (added after Episode 1)
+
+- **Weekly rhythm:** the full episode goes out **Friday**; one Short a day **Saturday–Thursday** (6 Shorts). Each 8-round episode gives 7–8 Shorts, so keep **one spare** (TikTok/Reels, or a backup). Schedule all 7 uploads at once in YouTube Studio, same time each day, and link every Short to the episode with "Related video".
+- **Deadline:** the week's episode is finished by Thursday. Render ≈ 3 h for 8 min (16:9) + ≈ 15 min per Short, so start the weekly session by Wednesday.
+- **Balance:** plan **4 TRUE / 4 FALSE** per episode. Post the Shorts in an order with no rhythm (not T-F-T-F, not long runs). Ricky's picks must not follow a pattern either (e.g. not always wrong on TRUE ones). He's right about 3 times in 8.
+- **Shorts format (vertical 9:16, `engine3d-vertical/`):** one round each, 45–60 s. The claim is fully on screen **on frame 0**. No round wipe, no score bug. **3-second countdown** with its own ≤ 3 s thinking line for Ricky. **Looping ending:** cut straight from Ricky's last word back to the question, no fade, no end card. A small "FULL EPISODE ON THE CHANNEL" banner sits at the top during his reaction. Shorts reuse the episode's voices (no extra voice cost apart from the short thinking line).
+- **Episode ending:** after the next-episode teaser, a 12 s end screen (room for YouTube's end-screen elements). Ricky says the like-and-subscribe line in his box ("Like and subscribe, or I'm takin' it personal, bruv."), then the SUBSCRIBE and SEND US A COMMENT buttons pop in.
+- **Opening:** the first claim must be on screen in the first 1–2 s. The channel title beat ("That's round one. Seven more claims...") comes **after** round 1, not before.
+- **Variety (avoid looking mass-produced):** rotate formats every few episodes (lightning round, theme episode, viewer claims, rematch); let Ricky evolve (season score, callbacks); vary pacing (not every round needs a pause); change studio colours, camera paths and room props; the user writes or rewrites some of Ricky's lines every week.
+- **Rendering in the cloud:** see `engine3d/README.md`. Render in resumable 8 s chunks as a session-tracked background task. Small fixes only redraw the chunks they touch (end text ≈ 5 min, one round ≈ 15–20 min; audio-only changes need no redraw).
