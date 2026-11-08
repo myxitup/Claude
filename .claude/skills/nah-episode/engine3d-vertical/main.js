@@ -101,7 +101,7 @@ function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=
     rrect(-320,-262,280,56,12,'#e5383b',INK,5);txt('TRUE OR FALSE?',-180,-234,34,'#fff');
     X.font='60px Bang';let lines=[''],cw=0;const shown=ws.filter(w=>window.SHORT||t>=w[1]-.05).map(w=>w[0].toUpperCase());if(/^TRUE$|^OR$|^FALSE\?$/.test(shown[0]||''))shown.splice(0,Math.min(3,shown.length));
     for(const s of shown){const ww=X.measureText(s+' ').width;if(cw+ww>560){lines.push('');cw=0}lines[lines.length-1]+=s+' ';cw+=ww}lines.forEach((l,i)=>txt(l.trim(),0,-90+i*74-(lines.length-1)*20,60,INK));X.restore();
-    const tp=seg.lines[0].b;chip(t,tp-.2,d+seg.a,'TRUE',W2-150,700,{size:72,bg:'#2fbf71',fg:'#fff',rot:-.05});chip(t,tp,d+seg.a,'FALSE',W2+150,700,{size:72,bg:'#e5383b',fg:'#fff',rot:.05})}
+    const tp=seg.lines[0].b;if(window.SHORT&&window.COVER&&RIMG[window.COVER])coverRicky(RIMG[window.COVER]);const cy=700,ct0=tp-.2,ct1=tp;if(!window.SHORT)chip(t,ct0,d+seg.a,'TRUE',W2-150,cy,{size:72,bg:'#2fbf71',fg:'#fff',rot:-.05});if(!window.SHORT)chip(t,ct1,d+seg.a,'FALSE',W2+150,cy,{size:72,bg:'#e5383b',fg:'#fff',rot:.05})}
   if(k==='shortend'){const s=pop(t,seg.a+.05,.3);X.save();X.translate(W2,330);X.scale(s*.78,s*.78);X.rotate(-.04);txt('NAH, I DON’T',0,-60,100,'#fff',{stroke:16});txt('BELIEVE THAT S-',0,50,100,'#ffd23f',{stroke:16});X.restore();
     chip(t,seg.a+.3,seg.b+1,'FULL EPISODE ON THE CHANNEL',W2,640,{size:48,bg:'#ff4f8b',fg:'#fff'});chip(t,seg.a+.6,seg.b+1,'8 FACTS · RICKY 3 : 5',W2,780,{size:44,bg:'#ffd23f'})}
   if(k==='react'&&window.SHORT){chip(t,seg.a+.3,seg.b+1,'FULL EPISODE ON THE CHANNEL',W2,70,{size:30,bg:'#ff4f8b',fg:'#fff'})}
@@ -112,8 +112,14 @@ function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=
 window.engineReady=(async()=>{
   TL=window.TLDATA;SEGS=TL.segs;RD=TL.ricky;RF=window.FACES;RMM=window.MOUTHMETA;
   const L=(src)=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.onerror=()=>r(null);i.src=src});
-  const names=[...new Set(RD.poses.map(p=>p.p))];await Promise.all(names.map(async n=>{RIMG[n]=await L(window.POSEDIR+n+'.png');RNM[n]=await L(window.POSEDIR+n+'__nm.png');RMK[n]=await L(window.POSEDIR+n+'__mask.png')}));
+  const names=[...new Set(RD.poses.map(p=>p.p).concat(window.COVER?[window.COVER]:[]))];await Promise.all(names.map(async n=>{RIMG[n]=await L(window.POSEDIR+n+'.png');RNM[n]=await L(window.POSEDIR+n+'__nm.png');RMK[n]=await L(window.POSEDIR+n+'__mask.png')}));
   await Promise.all(['rest','smile','slight','ah','ee','oh','oo','fv','mbp'].map(async n=>{RMO[n]=await L(window.MOUTHDIR+n+'.png')}));
   // re-draw textures that use fonts
   SETS.studio.drawBoard(0,0);return true})();
 window.TOTAL=()=>TL.total;
+
+// Ricky's face on a Short's opening frame (so the first frame works as the Short's cover)
+const _cov=document.createElement('canvas'),_cx=_cov.getContext('2d');
+function coverRicky(im){const h=600,sc=h/im.height,w=im.width*sc,x=W/2-w/2+20,y=H-h+10;_cov.width=Math.ceil(w+40);_cov.height=Math.ceil(h+40);_cx.clearRect(0,0,_cov.width,_cov.height);
+  for(let a=0;a<16;a++){const dx=Math.cos(a/16*TAU)*12,dy=Math.sin(a/16*TAU)*12;_cx.drawImage(im,20+dx,20+dy,w,h)}_cx.globalCompositeOperation='source-in';_cx.fillStyle='#fff';_cx.fillRect(0,0,_cov.width,_cov.height);_cx.globalCompositeOperation='source-over';_cx.drawImage(im,20,20,w,h);
+  X.save();X.shadowColor='rgba(0,0,0,.35)';X.shadowBlur=24;X.drawImage(_cov,x-20,y-20);X.restore()}
