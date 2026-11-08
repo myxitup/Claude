@@ -56,8 +56,9 @@ for s in segs:
     if k=='claim': fx('pop',a+.05,.45); tp=s['lines'][0]['b']; fx('pop',tp-.2,.5); fx('pop',tp,.5)
     if k=='lock':
         fx('stamp',a+.05,.6); c=s['count']
-        for i in range(5): fx('tick',c+i,.7)
-        fx('buzzer',c+5,.45); fx('flip',c+4.4,.4)
+        CDn=s.get('cdur',5)
+        for i in range(CDn): fx('tick',c+i,.7)
+        fx('buzzer',c+CDn,.45); fx('flip',c+CDn-.6,.4)
     if k=='reveal':
         st=s['stamp']; fx('drumroll',a,.7,dur=st-a+.05); fx('stamp',st,.9); fx('slam',st,.6); fx('ding',st+.05,.55); fx('sparkle',st+.1,.4); fx('flip',st+.45,.45)
         if s['pick']==s['verdict']: fx('cheer',st+.3,.5)
@@ -112,7 +113,7 @@ g=movavg(g,int(.15*SR))
 MUS*=g[:,None]
 amb_g=np.where(act,.35,.6)[:,None]
 mix=VO*1.0+FX*.7+AMB*amb_g+MUS
-fo=int(1.2*SR); end=int(T*SR); mix[end-fo:end]*=np.linspace(1,0,fo)[:,None]; mix[end:]=0
+fo=int((.08 if os.environ.get('LOOP') else 1.2)*SR); end=int(T*SR); mix[end-fo:end]*=np.linspace(1,0,fo)[:,None]; mix[end:]=0
 mix=np.tanh(mix*1.1)/np.tanh(1.1)
 out=(np.clip(mix,-1,1)*32767).astype(np.int16)
 with wave.open(f'{E}/'+os.environ.get('MIXOUT','mix.wav'),'wb') as w: w.setnchannels(2); w.setsampwidth(2); w.setframerate(SR); w.writeframes(out.tobytes())

@@ -111,14 +111,16 @@ for b in R['build']:
     else:
         gap(-.1);p0=T;K(b[1],'pause',b[2],b[3]);gap(.2);pauses.append([round(p0-.2,3),round(T,3)]);gap(.1)
 seg('build','topic',a,round=r,scenename=R['scene'],lines=lines,pauses=pauses)
-a=T;l=N(4,False);gap(.15);cd=T;K(R['think'][0],'box',R['think'][1],R['think'][2])
-T=max(T,cd+5.0);gap(.2);K(R['decide'][0],'box',R['decide'][1],R['decide'][2]);gap(.25)
-seg('lock','studio',a,round=r,count=round(cd,3),pick=R['pick'],score=[0,0])
+CDUR=int(os.environ.get('CD','5'));TH=int(os.environ.get('THINK',R['think'][0]))
+a=T;l=N(4,False);gap(.15);cd=T;K(TH,'box',R['think'][1],[c for c in R['think'][2] if c[0] in open(f'{E}/ricky.json').read()] if TH==R['think'][0] else [])
+T=max(T,cd+CDUR);gap(.2);K(R['decide'][0],'box',R['decide'][1],R['decide'][2]);gap(.25)
+seg('lock','studio',a,round=r,count=round(cd,3),cdur=CDUR,pick=R['pick'],score=[0,0])
 a=T;gap(.9);stamp=T;sc=[1,0] if R['pick']==R['verdict'] else [0,1]
 gap(1.4);seg('reveal','studio',a,round=r,stamp=round(stamp,3),verdict=R['verdict'],pick=R['pick'],score=sc)
 a=T;gap(.1);l=N(R['why']);gap(.35);seg('why','topic',a,round=r,scenename=R['scene'],lines=[l],src=R['src'],verdict=R['verdict'])
-a=T;K(R['react'][0],'full',R['react'][1],R['react'][2]);gap(.3);seg('react','den',a,round=r)
-a=T;gap(2.6);seg('shortend','studio',a,score=sc)
+a=T;K(R['react'][0],'full',R['react'][1],R['react'][2]);gap(.25);seg('react','den',a,round=r)
+if not os.environ.get('LOOP'):
+    a=T;gap(2.6);seg('shortend','studio',a,score=sc)
 rk['poses'].sort(key=lambda p:p['t']);rk['vis'].sort(key=lambda v:v['t'])
 m=[]
 for x in rk['vis']:

@@ -18,7 +18,7 @@ window.render=function(t){
       renderer.setScissorTest(false);renderer.setViewport(0,0,W,H);den.cam.aspect=W/H;den.cam.updateProjectionMatrix()}}
   // ---------- HUD ----------
   X.setTransform(DPR,0,0,DPR,0,0);X.clearRect(0,0,W,H);
-  if(mode==='full'){if(VERT){const s=H/720,cp=poseAt(t).cur.p,im=RIMG[cp],ff=RF[cp];const off=im&&ff?((ff.ax||(ff.mouth?ff.mouth[0]:im.width/2))-im.width/2)*RFR[shotOf(cp)].sc:0;X.save();X.translate(W/2-(640-off)*s,0);X.scale(s,s);drawRicky(t);X.restore();karaoke(RD.words,t,170,{size:58,maxw:W-50})}else{drawRicky(t);karaoke(RD.words,t,86,{size:50})}}
+  if(mode==='full'){if(VERT){const s=H/720,cp=poseAt(t).cur.p,im=RIMG[cp],ff=RF[cp];const off=im&&ff?((ff.ax||(ff.mouth?ff.mouth[0]:im.width/2))-im.width/2)*RFR[shotOf(cp)].sc:0;X.save();X.translate(W/2-(640-off)*s,0);X.scale(s,s);drawRicky(t);X.restore();karaoke(RD.words,t,170,{size:58,maxw:W-50});if(window.SHORT&&seg.kind==='react')chip(t,seg.a+.3,seg.b+1,'FULL EPISODE ON THE CHANNEL',W/2,70,{size:30,bg:'#ff4f8b',fg:'#fff'})}else{drawRicky(t);karaoke(RD.words,t,86,{size:50})}}
   else{
     if(mode==='pause'){X.save();X.fillStyle='rgba(10,5,30,.45)';X.beginPath();X.rect(0,0,W,H);X.roundRect(box.x,box.y,box.w,box.h,18);X.fill('evenodd');X.restore();
       const pa=clamp((t-show.a)/.12);X.save();X.globalAlpha=pa*(t<show.b-.25?1:clamp((show.b-t)/.25));if(VERT)X.translate(W/2-300,420-(H/2-30));X.fillStyle='rgba(0,0,0,.55)';X.beginPath();X.arc(300,H/2-30,70,0,TAU);X.fill();X.fillStyle='#fff';X.fillRect(272,H/2-62,18,64);X.fillRect(310,H/2-62,18,64);
@@ -36,7 +36,7 @@ window.render=function(t){
   const sa=t-seg.a;if(prevSeg&&fromS!==toS&&sa<.12){X.fillStyle=`rgba(255,255,255,${.5*(1-sa/.12)})`;X.fillRect(0,0,W,H)}
   if(ctx&&ctx.flash){X.fillStyle=`rgba(255,255,255,${ctx.flash})`;X.fillRect(0,0,W,H)}
   const v=X.createRadialGradient(W/2,H/2,H*.5,W/2,H/2,H*.95);v.addColorStop(0,'rgba(0,0,0,0)');v.addColorStop(1,'rgba(20,10,40,.2)');X.fillStyle=v;X.fillRect(0,0,W,H);
-  const f=Math.max(window.SHORT?0:1-clamp(t/.08),clamp((t-(TL.total-.5))/.5));if(f>0){X.fillStyle=`rgba(0,0,0,${f})`;X.fillRect(0,0,W,H)}};
+  const f=window.SHORT?0:Math.max(1-clamp(t/.08),clamp((t-(TL.total-.5))/.5));if(f>0){X.fillStyle=`rgba(0,0,0,${f})`;X.fillRect(0,0,W,H)}};
 function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=W/2;
   const cap=()=>{if(seg.lines)karaoke(seg.lines.flatMap(l=>l.words),t,VERT?H-150:H-70,VERT?{size:58,maxw:W-50}:{})};
   const lw=(s,n)=>{const ws=(seg.lines||[]).flatMap(l=>l.words||[]);let c=0;for(const w of ws)if(clean(w[0]).startsWith(clean(s))){if(c++===(n||0))return w[1]}return 1e9};
@@ -51,10 +51,10 @@ function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=
     const tp=seg.lines[0].b;chip(t,tp-.2,d+seg.a,'TRUE',W2-170,520,{size:64,bg:'#2fbf71',fg:'#fff',rot:-.05});chip(t,tp,d+seg.a,'FALSE',W2+170,520,{size:64,bg:'#e5383b',fg:'#fff',rot:.05})}
   if(k==='lock'){const c0=seg.count;if(t<c0+.1){const s=pop(t,seg.a+.05,.3)*(VERT?.72:1);X.save();X.translate(W2,VERT?380:H/2-60);X.scale(s,s);txt('TRUE OR FALSE?',0,-40,96,'#fff',{stroke:16});txt('LOCK IT IN!',0,60,96,'#ffd23f',{stroke:16});X.restore()}
     chip(t,c0-.4,seg.b,'COMMENT YOUR GUESS!',VERT?W2:250,VERT?330:H-60,{size:38,bg:'#ff4f8b',fg:'#fff'});
-    const u=t-c0;if(u>=0&&u<5.2){const n=Math.max(1,5-Math.floor(u)),fr=u%1;X.save();X.translate(VERT?W2:150,VERT?170:210);X.scale(.75,.75);X.fillStyle='rgba(27,18,64,.85)';X.beginPath();X.arc(0,0,110,0,TAU);X.fill();X.strokeStyle='#ffd23f';X.lineWidth=16;X.beginPath();X.arc(0,0,92,-PI/2,-PI/2+TAU*(1-clamp(u/5)));X.stroke();
-      const s=1+.25*(1-eo(fr*3));X.scale(s,s);txt(u<5?String(n):'0',0,6,130,'#fff',{stroke:14});X.restore()}
+    const CD=seg.cdur||5,u=t-c0;if(u>=0&&u<CD+.2){const n=Math.max(1,CD-Math.floor(u)),fr=u%1;X.save();X.translate(VERT?W2:150,VERT?170:210);X.scale(.75,.75);X.fillStyle='rgba(27,18,64,.85)';X.beginPath();X.arc(0,0,110,0,TAU);X.fill();X.strokeStyle='#ffd23f';X.lineWidth=16;X.beginPath();X.arc(0,0,92,-PI/2,-PI/2+TAU*(1-clamp(u/CD)));X.stroke();
+      const s=1+.25*(1-eo(fr*3));X.scale(s,s);txt(u<CD?String(n):'0',0,6,130,'#fff',{stroke:14});X.restore()}
     // Ricky says chip
-    let pickS=null;if(u>0&&u<5){const sp=Math.floor(Math.pow(u,1.6)*2.2);pickS=sp%2?'FALSE':'TRUE';if(u>4.3)pickS=seg.pick}else if(u>=5)pickS=seg.pick;
+    let pickS=null;if(u>0&&u<CD){const sp=Math.floor(Math.pow(u,1.6)*2.2);pickS=sp%2?'FALSE':'TRUE';if(u>CD-.7)pickS=seg.pick}else if(u>=CD)pickS=seg.pick;
     if(pickS){X.save();X.translate(BOX.x+BOX.w/2,VERT?BOX.y+BOX.h+55:BOX.y-110);rrect(-130,-34,260,68,14,'#1b1240','#fff',4);txt('RICKY SAYS',-50,0,26,'#fff');rrect(10,-24,110,48,10,pickS==='TRUE'?'#2fbf71':'#e5383b',INK,3);txt(pickS,65,2,30,'#fff');X.restore()}}
   if(k==='reveal'){const st=seg.stamp;if(t<st){const n=Math.floor((t-seg.a)*6)%4;txt('.'.repeat(n),W2,H/2-140,120,'#fff',{stroke:14})}
     else{const v=t-st,s=v<.18?lerp(2.4,1,eo(v/.18)):1;X.save();X.translate(W2,190);X.rotate(-.1);X.scale(s,s);const ok=seg.verdict==='TRUE';rrect(-250,-90,500,180,24,ok?'#2fbf71':'#e5383b','#fff',10);txt(seg.verdict+'!',0,6,150,'#fff',{stroke:16});X.restore();
@@ -104,6 +104,7 @@ function overlays(t,seg,ctx){const k=seg.kind,sa=t-seg.a,d=seg.b-seg.a;const W2=
     const tp=seg.lines[0].b;chip(t,tp-.2,d+seg.a,'TRUE',W2-150,700,{size:72,bg:'#2fbf71',fg:'#fff',rot:-.05});chip(t,tp,d+seg.a,'FALSE',W2+150,700,{size:72,bg:'#e5383b',fg:'#fff',rot:.05})}
   if(k==='shortend'){const s=pop(t,seg.a+.05,.3);X.save();X.translate(W2,330);X.scale(s*.78,s*.78);X.rotate(-.04);txt('NAH, I DON’T',0,-60,100,'#fff',{stroke:16});txt('BELIEVE THAT S-',0,50,100,'#ffd23f',{stroke:16});X.restore();
     chip(t,seg.a+.3,seg.b+1,'FULL EPISODE ON THE CHANNEL',W2,640,{size:48,bg:'#ff4f8b',fg:'#fff'});chip(t,seg.a+.6,seg.b+1,'8 FACTS · RICKY 3 : 5',W2,780,{size:44,bg:'#ffd23f'})}
+  if(k==='react'&&window.SHORT){chip(t,seg.a+.3,seg.b+1,'FULL EPISODE ON THE CHANNEL',W2,70,{size:30,bg:'#ff4f8b',fg:'#fff'})}
   if(k==='outro'){const s=pop(t,seg.a+.1,.35);X.save();X.translate(W2,180);X.scale(s,s);txt('FINAL SCORE',0,0,100,'#fff',{stroke:16});X.restore();const[r,f]=seg.score;chip(t,seg.a+.5,seg.b,`RICKY ${r} : ${f} FACTS`,W2,320,{size:64,bg:'#ffd23f'});cap()}
   if(k==='end'){const s=pop(t,seg.a+.1,.35);X.save();X.translate(W2,120);X.scale(s,s);X.rotate(-.04);txt('NAH, I DON’T',0,-55,96,'#fff',{stroke:16});txt('BELIEVE THAT S-',0,40,96,'#ffd23f',{stroke:16});X.restore();
     chip(t,seg.a+5.2,seg.b+1,'SUBSCRIBE',W2-200,640,{size:56,bg:'#e5383b',fg:'#fff'});chip(t,seg.a+5.5,seg.b+1,'SEND US A COMMENT',W2+210,640,{size:44,bg:'#3ec6ff'})}

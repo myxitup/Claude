@@ -44,7 +44,7 @@ function flatTex(col){return canvasTex(64,64,(c,w,h)=>{c.fillStyle=col;c.fillRec
     const sc0=seg.score||[0,0];let sr=sc0[0],sf=sc0[1];
     // blocks idle bob
     let tj=0,fj=0,tg=1,fg=1;
-    if(k==='lock'){const u=t-seg.count;if(u>0&&u<5){const s=Math.floor(u)%2;tj=s?0:.25;fj=s?.25:0}}
+    if(k==='lock'){const u=t-seg.count;if(u>0&&u<(seg.cdur||5)){const s=Math.floor(u)%2;tj=s?0:.25;fj=s?.25:0}}
     if(k==='reveal'){const u=t-seg.a;if(t<seg.stamp){const s=Math.floor(u*10)%2;tg=s?1.6:.6;fg=s?.6:1.6}else{const win=seg.verdict==='TRUE'?S.T:S.F;const v=t-seg.stamp;if(seg.verdict==='TRUE'){tj=1.2*Math.sin(Math.min(PI,v*6))*.6+.5*eo(v*3);tg=1.8;fg=.35}else{fj=.5*eo(v*3)+1.2*Math.sin(Math.min(PI,v*6))*.6;fg=1.8;tg=.35}}}
     if(k==='outro'||k==='end'){tg=fg=1}
     if(VERT){S.T.position.x=-2.3;S.F.position.x=2.3;S.T.scale.setScalar(.85);S.F.scale.setScalar(.85)}S.T.position.y=2.3+Math.sin(t*2)*.08+tj;S.F.position.y=2.3+Math.sin(t*2+1)*.08+fj;
@@ -58,7 +58,7 @@ function flatTex(col){return canvasTex(64,64,(c,w,h)=>{c.fillStyle=col;c.fillRec
     if(k==='intro')K=[[0,[0,22,34],[0,6,-10],30,55],[d*.55,[0,6,15],[0,4,0],15,50],[d,[1.5,4.6,12.5],[0,4.2,0],13,48]];
     else if(k==='wipe')K=[[0,[-6,5,14],[0,6,-4],15,50],[d,[0,7.5,8],[0,9,-4],10,44]];
     else if(k==='claim')K=[[0,[-7,4.5,13],[0,3.8,0],14,50],[d,[6,4.8,12.5],[0,4,0],14,48]];
-    else if(k==='lock'){const u=t-seg.a,c0=seg.count-seg.a;K=[[0,[0,5,14],[0,4,0],14,50],[c0,[0,4.4,11.5],[0,3.8,0],12,48],[c0+5,[0,3.8,8.5],[0,3.4,0],8.5,46],[d,[0,3.8,8.2],[0,3.4,0],8.5,46]]}
+    else if(k==='lock'){const u=t-seg.a,c0=seg.count-seg.a;K=[[0,[0,5,14],[0,4,0],14,50],[c0,[0,4.4,11.5],[0,3.8,0],12,48],[c0+(seg.cdur||5),[0,3.8,8.5],[0,3.4,0],8.5,46],[d,[0,3.8,8.2],[0,3.4,0],8.5,46]]}
     else if(k==='reveal'){const st=seg.stamp-seg.a,x=seg.verdict==='TRUE'?-3.3:3.3;K=[[0,[0,4,9],[0,3.4,0],9,48],[st,[0,4.2,10.5],[0,3.6,0],10,50],[st+.35,[x*.6,4,7.5],[x,3.6,0],7.5,46],[d,[x*.7,4.2,7],[x,3.8,0],7,44]]}
     else if(k==='outro')K=[[0,[0,7,16],[0,8,-4],16,50],[d,[0,8.6,10],[0,9,-4],12,46]];
     else K=[[0,[0,8.6,10],[0,9,-4],12,46],[d,[0,14,24],[0,8,-4],24,52]];
