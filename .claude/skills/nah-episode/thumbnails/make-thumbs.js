@@ -5,7 +5,7 @@ const {chromium} = require('playwright'); const fs = require('fs'); const path =
 (async () => {
   const [cfgPath, out] = process.argv.slice(2); const cfg = JSON.parse(fs.readFileSync(cfgPath)); fs.mkdirSync(out, {recursive: true});
   const here = __dirname, rig = path.resolve(here, '../character/rigset');
-  const imgs = new Set(); for (const t of cfg.thumbs) { if (t.ricky) imgs.add(['ricky:' + t.ricky.pose, 'file://' + rig + '/' + t.ricky.pose + '.png']); for (const s of t.subjects || []) if (s.type === 'image') imgs.add([s.key, 'file://' + path.resolve(path.dirname(cfgPath), s.src)]); }
+  const imgs = new Set(); for (const t of cfg.thumbs) { if (t.ricky) imgs.add(['ricky:' + t.ricky.pose, 'file://' + rig + '/' + t.ricky.pose + '.png']); if (t.bg && t.bg.type === 'image') imgs.add([t.bg.key, 'file://' + path.resolve(path.dirname(cfgPath), t.bg.src)]); for (const s of t.subjects || []) if (s.type === 'image') imgs.add([s.key, 'file://' + path.resolve(path.dirname(cfgPath), s.src)]); }
   const b = await chromium.launch({args: ['--allow-file-access-from-files']}); const p = await b.newPage({viewport: {width: 1280, height: 720}});
   const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto('file://' + here + '/thumb-maker.html'); await p.evaluate(l => window.loadImages(l), [...imgs].map(JSON.stringify).filter((v, i, a) => a.indexOf(v) === i).map(JSON.parse));

@@ -51,7 +51,9 @@ const SUBJ={
   X.font='70px Bang';X.textAlign='center';X.textBaseline='middle';X.fillStyle='#c9b3ff';X.fillText('RICKY',-170,6);X.fillStyle='#fff';X.font='110px Bang';X.fillText(`${o.ricky??0} : ${o.facts??0}`,40,6);X.fillStyle='#9be3b5';X.font='60px Bang';X.fillText('FACTS',215,6);X.restore()},
  image(o){sticker(IMG[o.key],o.x??400,o.y??660,o.h??480,o.flip,o.rot||0,o.outline??8)}};
 window.makeThumb=cfg=>{X.setTransform(1,0,0,1,0,0);X.clearRect(0,0,W,H);
-  const b=cfg.bg||{};if(b.type==='space')bgSpace();else bgRays(b.c1||'#ffb547',b.c2||'#c2311f');
+  const b=cfg.bg||{};if(b.type==='space')bgSpace();else if(b.type==='image'&&IMG[b.key]){const im=IMG[b.key],sc=Math.max(W/im.width,H/im.height)*(b.zoom||1);X.drawImage(im,(W-im.width*sc)*(b.fx==null?.5:b.fx),(H-im.height*sc)*(b.fy==null?.5:b.fy),im.width*sc,im.height*sc);
+    const g=X.createLinearGradient(0,0,W*.65,0);g.addColorStop(0,`rgba(20,10,40,${b.shade==null?.45:b.shade})`);g.addColorStop(1,'rgba(20,10,40,0)');X.fillStyle=g;X.fillRect(0,0,W,H)}
+  else bgRays(b.c1||'#ffb547',b.c2||'#c2311f');
   for(const s of (cfg.subjects||[]))SUBJ[s.type](s);
   if(cfg.ricky){const r=cfg.ricky;sticker(IMG['ricky:'+r.pose],r.x??1000,r.y??735,r.h??640,!!r.flip,r.rot||0)}
   headline(cfg.lines||[],cfg.textX??60,cfg.textY??30,cfg.textMaxW??700);

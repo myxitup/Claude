@@ -1,0 +1,17 @@
+{
+  "title": "They Paid €121,000 for a Speeding Ticket... and 7 More Facts That Sound Fake",
+  "thumbs": [
+    {"name": "ep01-A-finland", "bg": {"type": "image", "key": "bg:street", "src": "bg-street.png"},
+     "subjects": [{"type": "ticket", "title": "SPEEDING FINE", "amount": "€121,000", "y": 460}],
+     "ricky": {"pose": "h_shocked", "x": 1000, "h": 640},
+     "lines": [{"text": "PAID THIS", "size": 112, "color": "#fff"}, {"text": "FOR SPEEDING?!", "size": 112, "color": "#ffd23f"}]},
+    {"name": "ep01-B-wombat", "bg": {"type": "image", "key": "bg:bush", "src": "bg-bush.png", "zoom": 1.25, "fx": 0.35, "fy": 0.7, "shade": 0.35},
+     "subjects": [],
+     "ricky": {"pose": "h_disgusted", "x": 1010, "h": 640},
+     "lines": [{"text": "SQUARE", "size": 150, "color": "#fff"}, {"text": "POOP?!", "size": 150, "color": "#ffd23f"}]},
+    {"name": "ep01-C-cloud", "bg": {"type": "image", "key": "bg:sky", "src": "bg-sky.png", "zoom": 1.15, "fx": 0.45, "fy": 0.35, "shade": 0.4},
+     "subjects": [],
+     "ricky": {"pose": "h_shocked", "x": 1010, "h": 640},
+     "lines": [{"text": "HEAVIER THAN", "size": 96, "color": "#fff"}, {"text": "100 ELEPHANTS?", "size": 96, "color": "#ffd23f"}]}
+  ]
+}
