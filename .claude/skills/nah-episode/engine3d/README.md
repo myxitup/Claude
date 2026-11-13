@@ -13,7 +13,7 @@ Three.js 0.147 scenes (cel-shaded, black ink outlines) with Ricky's 2D cut-out r
 1. Write `narr.json` (narrator) and `ricky.json` (Ricky, v4 expression tags), voice them with `scripts/el_tts.py` (Ricky with `EL_MODEL=eleven_v4_exp`).
 2. Edit the round list in `build_tl.py` and run it.
 3. Add or reuse a set in `sets.js` for each topic; camera keys anchor to narrator words via `w('word')`.
-4. Check stills, render, `python3 mix.py`, then `ffmpeg -i video.mp4 -i mix.wav` and `loudnorm=I=-14:TP=-1.5`.
+4. Check stills, render, `python3 mix.py`, normalise with `loudnorm=I=-14:TP=-1.5`, then join the chunks and add the audio **without re-encoding the video** (`-c:v copy`). A second video encode roughly halves the quality and makes the episode look grainy.
 5. Open on the question: the first claim must be on screen within 1–2 s (no logo intro).
 
 Needs `node_modules` with `three@0.147.0` and `@fontsource/{bangers,patrick-hand}` next to `episode.html`; set `EP_DIR` to the folder holding `tl.json`, `vo/` and `parts/`.
